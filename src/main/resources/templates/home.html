@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet"/>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css"  th:href="@{css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" />
+
+
+    <!-- Slick -->
+    <link rel="stylesheet" type="text/css"  th:href="@{css/ma_slick.css}" href="../static/css/ma_slick.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{css/ma_slick-theme.css}" href="../static/css/ma_slick-theme.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{css/ma_service.css}" href="../static/css/ma_service.css" >
+    <link rel="stylesheet" type="text/css" th:href="@{css/ma_service_joint.css}" href="../static/css/ma_service_joint.css"/>
+
+    <!-- nouislider -->
+    <link  rel="stylesheet" type="text/css"  th:href="@{css/ma_nouislider.min.css}" href="../static/css/ma_nouislider.min.css"/>
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet"  type="text/css" th:href="@{css/font-awesome.min.css}" href="../static/css/font-awesome.min.css"/>
+
+    <!-- Custom stlylesheet -->
+    <link  rel="stylesheet" type="text/css"  th:href="@{css/ma_style.css}"  href="../static/css/ma_style.css" />
+    <title>LogimaStore</title>
+</head>
+<body >
+<!-- HEADER -->
+<header>
+    <!-- top Header -->
+    <div id="top-header">
+        <div class="container">
+            <div class="pull-left">
+                <span>Bienvenue sur LogimaStore!</span>
+            </div>
+            <div class="pull-right">
+                <ul class="header-top-links">
+                    <li><a th:href="@{'/'}">Qui sommes-nous</a></li>
+                    <li><a th:href="@{'/'}">Conditions Générales d'Utilisation</a></li>
+                    <li><a th:href="@{'/'}">Politique de retour</a></li>
+                    <!--  <li class="dropdown default-dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">ENG <i class="fa fa-caret-down"></i></a>
+                        <ul class="custom-menu">
+                            <li><a href="#">English (ENG)</a></li>
+                            <li><a href="#">Russian (Ru)</a></li>
+                            <li><a href="#">French (FR)</a></li>
+                            <li><a href="#">Spanish (Es)</a></li>
+                        </ul>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /top Header -->
+
+    <!-- header -->
+    <div id="header">
+        <div class="container">
+            <div class="pull-left">
+                <!-- Logo -->
+                <div class="header-logo">
+                    <a class="logo" th:href="@{'/'}">
+                        <h2>Logima<strong><span style="color:#52b3d9;">S</span></strong>tore</h2>
+                    </a>
+                </div>
+                <!-- /Logo -->
+
+                <!-- Search -->
+                <div class="header-search">
+                    <form>
+                        <input class="input search-input" type="text" placeholder="Trouvez un produit">
+                        <select class="input search-categories">
+                            <option value="0">Par categorie</option>
+                            <option value="1">Ordinateurs</option>
+                            <option value="1">Imprimants et Scanners</option>
+                            <option value="1">Téléphone</option>
+                            <option value="1">Tablettes</option>
+                        </select>
+                        <button class="search-btn"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+                <!-- /Search -->
+            </div>
+            <div class="pull-right">
+                <ul class="header-btns">
+                    <!-- Account -->
+                    <li class="header-account dropdown default-dropdown">
+                        <div  role="button" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                            <div class="header-btns-icon">
+                                <i class="fa fa-user-o"></i>
+                            </div>
+                            <strong  class="text-uppercase">Mon compcte <i class="fa fa-caret-down"></i></strong>
+                        </div>
+                        <ul class="custom-menu">
+                            <li sec:authorize="hasRole('ROLE_USER')" ><a href="#"><i class="fa fa-heart-o"></i> mes favourits</a></li>
+                            <li sec:authorize="hasRole('ROLE_USER')" ><a th:href="@{/logout}"><i  class="fa fa-unlock-alt"></i> Se déconnecter</a></li>
+                            <li sec:authorize="isAnonymous()"><a th:href="@{/panier}"><i class="fa fa-lock"></i> Se connecter</a></li>
+                            <li sec:authorize="isAnonymous()"><a th:href="@{/inscription}"><i   class="fa fa-user-plus"></i> S'inscrire</a></li>
+                        </ul>
+                    </li>
+                    <!-- /Account -->
+
+                    <!-- Cart -->
+                    <li class="header-cart dropdown default-dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                            <div class="header-btns-icon">
+                                <i class="fa fa-shopping-cart"></i>
+                                <span class="qty" th:text="${nbr}"></span>
+                            </div>
+                            <strong class="text-uppercase">Mon panier<i class="fa fa-caret-down"></i></strong>
+                            <br>
+                            <span th:inline="text">[[${totale}]]Dhs</span>
+                        </a>
+                        <div class="custom-menu">
+                            <div id="shopping-cart">
+                                <div sec:authorize="isAnonymous()"><span style="color:#3F3F3F;">Vous n'étes pas connecter</span></div>
+                                <div sec:authorize="hasRole('ROLE_USER')" class="shopping-cart-list">
+                                    <div th:each="lp:${listArticlePanier}" class="product product-widget">
+                                        <div  class="product-thumb">
+                                            <img th:src="@{${lp.image1_front}}" alt="">
+                                        </div>
+                                        <div class="product-body">
+                                            <h3 class="product-price" th:inline="text">[[${lp.prix}]]<span class="qty">x[[${quantite}]]</span></h3>
+                                            <h2 class="product-name"><a href="#" th:text="${lp.libArticle}"></a></h2>
+                                        </div>
+                                        <a th:href="@{supprimer(idArticle=${lp.idArticle})}" class="cancel-btn"><i class="fa fa-trash"></i></a>
+                                    </div>
+                                </div>
+                                <div sec:authorize="hasRole('ROLE_USER')" class="shopping-cart-btns">
+                                            <a th:href="@{listePanierArticle(quantite=${0})}" class="main-btn">panier</a>
+                                    <a th:href="@{caisse(quantite=${0})}" class="primary-btn">Cassie <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- /Cart -->
+
+                    <!-- Mobile nav toggle-->
+                    <li class="nav-toggle">
+                        <button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
+                    </li>
+                    <!-- / Mobile nav toggle -->
+                </ul>
+            </div>
+        </div>
+        <!-- header -->
+    </div>
+    <!-- container -->
+</header>
+<!-- /HEADER -->
+
+<!-- NAVIGATION -->
+<div id="navigation">
+    <!-- container -->
+    <div class="container">
+        <div id="responsive-nav">
+            <!-- category nav -->
+            <div class="category-nav ">
+                <span class="category-header">Categories <i class="fa fa-list"></i></span>
+                <ul class="category-list">
+                    <li class="dropdown side-dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Ordinateur <i class="fa fa-angle-right"></i></a>
+                        <div class="custom-menu">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Pc</h3></li>
+                                        <li><a th:href="@{articles(motClet=${'pc portable'})}">Pc portable</a></li>
+                                        <li><a th:href="@{articles(motClet=${'pc fixe'})}">Pc fixe</a></li>
+                                        <li><a th:href="@{articles(motClet=${'pc gamer'})}">Pc gamer</a></li>
+                                        <li><a th:href="@{articles(motClet=${'macbook'})}">MacBook</a></li>
+                                        <li><a th:href="@{articles(motClet=${'serveur'})}">Serveur</a></li>
+                                    </ul>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Accésoires</h3></li>
+                                        <li><a th:href="@{articles(motClet=${'clés usb'})}">Clés USb</a></li>
+                                        <li><a th:href="@{articles(motClet=${'cartes mémoire'})}">Cartes Mémoire</a></li>
+                                        <li><a th:href="@{articles(motClet=${'claviers & souris'})}">Claviers & souris </a></li>
+                                        <li><a th:href="@{articles(motClet=${'routeurs & cartes réseaux'})}">Routeurs & cartes réseaux</a></li>
+                                        <li><a th:href="@{articles(motClet=${'disque durs'})}">Disques durs </a></li>
+                                    </ul>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Top marques</h3></li>
+                                        <li><a th:href="@{articles(marque=${'hp'})}">Hp</a></li>
+                                        <li><a th:href="@{articles(marque=${'apple'})}">Apple</a></li>
+                                        <li><a th:href="@{articles(marque=${'lenovo'})}">Lenovo</a></li>
+                                        <li><a th:href="@{articles(marque=${'asus'})}">Asus</a></li>
+                                        <li><a th:href="@{articles(marque=${'toshiba'})}">Toshiba</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row hidden-sm hidden-xs">
+                                <div class="col-md-12">
+                                    <hr>
+                                    <a class="banner banner-1" href="#">
+                                        <img th:src="@{1/img/banner05pc.jpg}" alt="">
+                                        <div class="banner-caption text-center">
+                                            <h2 class="white-color" style="background-color:rgba(41, 128, 185,0.7);">Ordinateurs</h2>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="dropdown side-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Téléphone<i class="fa fa-angle-right"></i></a>
+                        <div class="custom-menu">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Téléphone portable</h3></li>
+                                        <li><a th:href="@{articles(motClet=${'téléphone android'})}">Téléphone Android</a></li>
+                                        <li><a th:href="@{articles(motClet=${'iphone'})}">Iphone</a></li>
+                                        <li><a th:href="@{articles(motClet=${'téléphone filaire'})}">Téléphone filaire</a></li>
+                                        <li><a th:href="@{articles(motClet=${'téléphone mobile'})}">Téléphone mobile</a></li>
+                                        <li><a th:href="@{articles(motClet=${'àmoinsde100dhs'})}">à moins de 100Dhs</a></li>
+                                    </ul>
+                                    <hr>
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Accéssoires</h3></li>
+                                        <li><a th:href="@{articles(motClet=${'smartwatch'})}">SmartWatch</a></li>
+                                        <li><a th:href="@{articles(motClet=${'vr box'})}">VR Box</a></li>
+                                        <li><a th:href="@{articles(motClet=${'power banks'})}">Power Banks</a></li>
+                                        <li><a th:href="@{articles(motClet=${'écouteurs'})}">écouteurs</a></li>
+                                        <li><a th:href="@{articles(motClet=${'protecteurs d écran'})}">Protecteurs d'écran</a></li>
+                                    </ul>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Smartphones Premium</h3></li>
+                                        <li><a th:href="@{articles(motClet=${'samsung galaxy s10'})}">Samsung Galaxy S10</a></li>
+                                        <li><a th:href="@{articles(motClet=${'samsung galaxy s10 plus'})}">Samsung Galaxy S10 plus</a></li>
+                                        <li><a th:href="@{articles(motClet=${'iphone xs'})}">Iphone XS</a></li>
+                                        <li><a th:href="@{articles(motClet=${'iphone xr'})}">Iphone XR</a></li>
+                                        <li><a th:href="@{articles(motClet=${'iphone x'})}">Iphone X</a></li>
+                                    </ul>
+                                    <hr>
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Top Marques</h3></li>
+                                        <li><a th:href="@{articles(marque=${'samsung'})}">Samsung</a></li>
+                                        <li><a th:href="@{articles(marque=${'apple'})}">Apple</a></li>
+                                        <li><a th:href="@{articles(marque=${'xiaomi'})}">Xiaomi</a></li>
+                                        <li><a th:href="@{articles(marque=${'huawei'})}">Huawei</a></li>
+                                        <li><a th:href="@{articles(marque=${'oppo'})}">Oppo</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-4 hidden-sm hidden-xs">
+                                    <a class="banner banner-2" href="#">
+                                        <img th:src="@{1/img/banner04.jpg}" alt="">
+                                        <div class="banner-caption">
+                                            <h2 class="white-color" style="background-color:rgba(41, 128, 185,0.7);">Téléphones</h2>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a th:href="@{articles(motClet=${'imprimants & scanners'})}">Imprimants et Scanners</a></li>
+                    <li class="dropdown side-dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Tablettes<i class="fa fa-angle-right"></i></a>
+                        <div class="custom-menu">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Tablettes</h3></li>
+                                        <li><a th:href="@{articles(motClet=${'tablette samsung'})}">Tablette Samsung</a></li>
+                                        <li><a th:href="@{articles(motClet=${'ipad'})}">Ipad</a></li>
+                                        <li><a th:href="@{articles(motClet=${'tablette lenovo'})}">Tablette Lenovo</a></li>
+                                    </ul>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Accessoires</h3></li>
+                                        <li><a th:href="@{articles(motClet=${'monitures'})}">Montures</a></li>
+                                        <li><a th:href="@{articles(motClet=${'sacs'})}">Sacs</a></li>
+                                        <li><a th:href="@{articles(motClet=${'housses'})}">Housses</a></li>
+                                    </ul>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Top marques</h3></li>
+                                        <li><a th:href="@{articles(marque=${'hp'})}">Hp</a></li>
+                                        <li><a th:href="@{articles(marque=${'apple'})}">Appel</a></li>
+                                        <li><a th:href="@{articles(marque=${'huawei'})}">Huawei</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row hidden-sm hidden-xs">
+                                <div class="col-md-12">
+                                    <hr>
+                                    <a class="banner banner-1" href="#">
+                                        <img th:src="@{1/img/banner05.jpg}" alt="">
+                                        <div class="banner-caption text-center">
+                                            <h2 class="white-color" style="background-color:rgba(41, 128, 185,0.7);">Tablettes</h2>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a th:href="@{articles(motClet=${''})}">Voir tous</a></li>
+                </ul>
+            </div>
+            <!-- /category nav -->
+
+            <!-- menu nav -->
+            <div class="menu-nav">
+                <span class="menu-header">Accieul<i class="fa fa-bars"></i></span>
+                <ul class="menu-list">
+                    <li><a th:href="@{'/'}">Accueil</a></li>
+                    <li class="dropdown mega-dropdown full-width"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Utilisé<i class="fa fa-caret-down"></i></a>
+                        <div class="custom-menu">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="hidden-sm hidden-xs">
+                                        <a class="banner banner-1" href="#">
+                                            <img th:src="@{1/img/banner06.jpg}" alt="">
+                                            <div class="banner-caption text-center">
+                                                <h2 class="white-color" style="background-color:rgba(41, 128, 185,0.7);">Ordinateurs</h2>
+                                            </div>
+                                        </a>
+                                        <hr>
+                                    </div>
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Ordinateurs</h3></li>
+                                        <li><a href="#">PC</a></li>
+                                        <li><a href="#">Accésoires</a></li>
+                                        <li><a href="#">Top marques</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="hidden-sm hidden-xs">
+                                        <a class="banner banner-1" href="#">
+                                            <img th:src="@{1/img/banner07.jpg}" alt="">
+                                            <div class="banner-caption text-center">
+                                                <h2 class="white-color" style="background-color:rgba(41, 128, 185,0.7);">Téléphones</h2>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <hr>
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Téléphone</h3></li>
+                                        <li><a href="#">Téléphone Portable</a></li>
+                                        <li><a href="#">Accéssoires</a></li>
+                                        <li><a href="#">Top marques</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="hidden-sm hidden-xs">
+                                        <a class="banner banner-1" href="#">
+                                            <img th:src="@{1/img/banner08.jpg}" alt="">
+                                            <div class="banner-caption text-center">
+                                                <h2 class="white-color" style="background-color:rgba(41, 128, 185,0.7);">Tablettes</h2>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <hr>
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Tablettes</h3></li>
+                                        <li><a href="#">Tablettes</a></li>
+                                        <li><a href="#">Accésoires</a></li>
+                                        <li><a href="#">Top marques</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="hidden-sm hidden-xs">
+                                        <a class="banner banner-1" href="#">
+                                            <img th:src="@{1/img/banner09.jpg}" alt="">
+                                            <div class="banner-caption text-center">
+                                                <h2 class="white-color" style="background-color:rgba(41, 128, 185,0.7);">Imprimants</h2>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <hr>
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Imprimants & scanners</h3></li>
+                                        <li><a href="#">Imprimants</a></li>
+                                        <li><a href="#">Scanners</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="#">Favoris</a></li>
+                    </li>
+                </ul>
+            </div>
+            <!-- menu nav -->
+        </div>
+    </div>
+    <!-- /container -->
+</div>
+
+
+<div>
+    <!-- HOME -->
+    <div id="home">
+        <!-- container -->
+        <div class="container">
+            <!-- home wrap -->
+            <div class="home-wrap">
+                <!-- home slick -->
+                <div id="home-slick">
+                    <!-- banner -->
+                    <div class="banner banner-1">
+                        <img th:src="@{1/img/ma_banner01.jpg}" alt="">
+                        <div class="banner-caption text-center">
+                            <h1></h1>
+                            <h3 class="white-color font-weak"></h3>
+                            <a th:href="@{/articles}" class="primary-btn">découvrir</a>
+                        </div>
+                    </div>
+                    <!-- /banner -->
+
+                    <!-- banner -->
+                    <div class="banner banner-1">
+                        <img th:src="@{1/img/ma_banner02.jpg}" alt="">
+                        <div class="banner-caption">
+                            <h1 class="primary-color">Tablettes<br><span class="white-color font-weak">promotion de 20%</span></h1>
+                            <a th:href="@{/articles}" class="primary-btn">découvrir</a>
+                        </div>
+                    </div>
+                    <!-- /banner -->
+                    <!-- banner -->
+                    <div class="banner banner-1">
+                        <img th:src="@{1/img/ma_banner03.jpg}" alt="">
+                        <div class="banner-caption">
+                            <h1 class="white-color">Nouveau PC<span>Collection</span></h1>
+                            <a th:href="@{/articles}" class="primary-btn">découvrir</a>
+                        </div>
+                    </div>
+                    <!-- /banner -->
+                </div>
+                <!-- /home slick -->
+            </div>
+            <!-- /home wrap -->
+        </div>
+        <!-- /container -->
+    </div>
+<div class="container rounded-lg" style="margin-top: 20px; margin-bottom: 20px;">
+    <div>
+        <div class="row">
+            <!-- Section Heading -->
+            <div class="col-12">
+                <div class="section-heading text-center">
+                    <br> <br>
+                    <h3>Pourquoi LogimaStore?</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <!-- Single Service Area -->
+            <div class="col-12 col-lg-4">
+                <div class="single-service-area mb-80">
+                    <!-- Service Icon -->
+                    <div class="service-icon">
+                        <i class="icon_gift_alt"></i>
+                    </div>
+                    <h5>Promotions</h5>
+                    <p></p>
+                </div>
+            </div>
+
+            <!-- Single Service Area -->
+            <div class="col-12 col-lg-4">
+                <div class="single-service-area mb-80">
+                    <!-- Service Icon -->
+                    <div class="service-icon">
+                        <i class="icon_headphones"></i>
+                    </div>
+                    <h5>Support</h5>
+                    <p></p>
+                </div>
+            </div>
+
+            <!-- Single Service Area -->
+            <div class="col-12 col-lg-4">
+                <div class="single-service-area mb-80">
+                    <!-- Service Icon -->
+                    <div class="service-icon">
+                        <i class="icon_pin_alt"></i>
+                    </div>
+                    <h5>Livraison domicile</h5>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <div >
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- section-title -->
+                <div class="col-md-12">
+                    <div class="section-title">
+                        <h2 class="title">Dernier offres</h2>
+                        <div class="pull-right">
+                            <div class="product-slick-dots-1 custom-dots"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /section-title -->
+
+                <!-- banner -->
+                <div class="col-md-3 col-sm-6 col-xs-6">
+                    <div class="banner banner-2">
+                        <img th:src="@{1/img/ma_banner14.jpg}" alt="">
+                        <div class="banner-caption">
+                            <h2 class="white-color">Dernier<br>Offres</h2>
+                            <button class="primary-btn">Découvrir</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /banner -->
+
+                <!-- Product Slick -->
+                <div class="col-md-9 col-sm-6 col-xs-6">
+                    <div class="row">
+                        <div id="product-slick-1" class="product-slick">
+                            <!-- Product Single -->
+                            <div class="product product-single" th:each="a:${listArticle}">
+                                <div class="product-thumb">
+                                    <div class="product-label">
+                                        <span>Noeuf</span>
+                                        <span th:if="${a.prix} < ${1900} and ${a.prix} > ${100}" class="sale">-20%</span>
+                                    </div>
+                                    <!--   <ul th:if="${a.prix} < ${1900} and ${a.prix} > ${100}" class="product-countdown">
+                                           <li><span>00 H</span></li>
+                                           <li><span>00 M</span></li>
+                                           <li><span>00 S</span></li>
+                                       </ul>-->
+                                       <a th:href="@{panier(idArticle=${a.idArticle})}" class="main-btn quick-view"><i class="fa fa-search-plus"></i>Voir</a>
+                                       <img th:src="@{${a.image1_front}}" alt="">
+                                   </div>
+                                   <div class="product-body">
+                                       <h3 class="product-price" th:inline="text"> [[${a.prix}]]Dh
+                                           <del th:if="${a.prix} < ${1900} and ${a.prix} > ${100}" class="product-old-price" th:inline="text">[[${a.prix*0.8}]]</del>
+                                       </h3>
+                                       <div class="product-rating">
+                                           <i class="fa fa-star"></i>
+                                           <i class="fa fa-star"></i>
+                                           <i class="fa fa-star"></i>
+                                           <i class="fa fa-star"></i>
+                                           <i class="fa fa-star-o empty"></i>
+                                       </div>
+                                       <h2 class="product-name" th:text="${a.libArticle}"><a href="#"></a></h2>
+                                       <div class="product-btns">
+                                           <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                                           <a th:href="@{panier(idArticle=${a.idArticle})}" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Ajouter au panier</a>
+                                       </div>
+                                   </div>
+                               </div>
+                               <!-- /Product Single -->
+                        </div>
+                    </div>
+                </div>
+                <!-- /Product Slick -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+
+    <div>
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- section-title -->
+                <div class="col-md-12">
+                    <div class="section-title">
+                        <h2 class="title">Promotions</h2>
+                        <div class="pull-right">
+                            <div class="product-slick-dots-2 custom-dots"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /section-title -->
+
+                <!-- banner -->
+                <div class="col-md-3 col-sm-6 col-xs-6">
+                    <div class="banner banner-2">
+                        <img th:src="@{1/img/ma_banner14.jpg}" alt="">
+                        <div class="banner-caption">
+                            <h2 class="white-color">Dernier<br>Offres</h2>
+                            <button class="primary-btn">Découvrir</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /banner -->
+
+                <!-- Product Slick -->
+                <div class="col-md-9 col-sm-6 col-xs-6">
+                    <div class="row">
+                        <div id="product-slick-2" class="product-slick">
+                            <!-- Product Single -->
+                            <div class="product product-single" th:each="a:${listArticle}" th:if="${a.prix} < ${1900} and ${a.prix} > ${100}">
+                                <div class="product-thumb">
+                                    <div class="product-label">
+                                        <span>Noeuf</span>
+                                        <span th:if="${a.prix} < ${1900} and ${a.prix} > ${100}" class="sale">-20%</span>
+                                    </div>
+                                    <!--   <ul th:if="${a.prix} < ${1900} and ${a.prix} > ${100}" class="product-countdown">
+                                           <li><span>00 H</span></li>
+                                           <li><span>00 M</span></li>
+                                           <li><span>00 S</span></li>
+                                       </ul>-->
+                                    <a th:href="@{panier(idArticle=${a.idArticle})}" class="main-btn quick-view"><i class="fa fa-search-plus"></i>Voir</a>
+                                    <img th:src="@{${a.image1_front}}" alt="">
+                                </div>
+                                <div class="product-body">
+                                    <h3 class="product-price" th:inline="text"> [[${a.prix}]]Dh
+                                        <del th:if="${a.prix} < ${1900} and ${a.prix} > ${100}" class="product-old-price" th:inline="text">[[${a.prix*0.8}]]</del>
+                                    </h3>
+                                    <div class="product-rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o empty"></i>
+                                    </div>
+                                    <h2 class="product-name" th:text="${a.libArticle}"><a href="#"></a></h2>
+                                    <div class="product-btns">
+                                        <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                                        <a th:href="@{panier(idArticle=${a.idArticle})}" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Ajouter au panier</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Product Single -->
+                        </div>
+                    </div>
+                </div>
+                <!-- /Product Slick -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+
+</div>
+<!-- FOOTER -->
+<footer id="footer" class="section section-grey">
+    <!-- container -->
+    <div class="container" >
+        <!-- row -->
+        <div class="row" >
+            <!-- footer widget -->
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <div class="footer">
+                    <!-- footer logo -->
+                    <div class="footer-logo">
+                        <a class="logo" href="#">
+                            <h2><span style="color:grey;">Logima<span style="color: #B8B8B8;">S</span>tore</span></h2>
+                        </a>
+                    </div>
+                    <!-- /footer logo -->
+
+                    <p>Bienvenue sur LogimaStore, la boutique de vente et d'achat en ligne,
+                        Le meilleur des Smartphones, TV, PC portables et Mode... à portée de clic !</p>
+
+                    <!-- footer social -->
+                    <ul class="footer-social list-links-social">
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                    </ul>
+                    <!-- /footer social -->
+                </div>
+            </div>
+            <!-- /footer widget -->
+
+            <!-- footer widget -->
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <div class="footer">
+                    <h3 class="footer-header">Mon Compte</h3>
+                    <ul class="list-links-footer">
+                        <li><a th:href="@{panier}">Panier</a></li>
+                        <li><a th:href="@{panier}">Favouris</a></li>
+                        <li><a sec:authorize="isAnonymous()" th:href="@{'/'}">Se connecter</a></li>
+                        <li sec:authorize="isAuthenticated()"><a th:href="@{'/'}">Se déconnecter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /footer widget -->
+
+            <div class="clearfix visible-sm visible-xs"></div>
+
+            <!-- footer widget -->
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <div class="footer">
+                    <h3 class="footer-header">À PROPOS</h3>
+                    <ul class="list-links-footer">
+                        <li><a th:href="@{'/'}">Qui sommes-nous</a></li>
+                        <li><a th:href="@{'/'}">Conditions Générales d'Utilisation</a></li>
+                        <li><a th:href="@{'/'}">Politique de retour</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /footer widget -->
+
+            <!-- footer subscribe -->
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <div class="footer">
+                    <h3 class="footer-header">Rejoignez nouss</h3>
+                    <p>Inscrivez-vous à nos communications pour recevoir nos meilleures offres!</p>
+                    <form>
+                        <div class="form-group">
+                            <input name="email" class="input" placeholder="Votre email">
+                        </div>
+                        <button class="primary-btn">Inscrit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- /footer subscribe -->
+        </div>
+        <!-- /row -->
+        <hr>
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <!-- footer copyright -->
+                <div class="footer-copyright">
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> powred by LogimaStore
+                </div>
+                <!-- /footer copyright -->
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</footer>
+<!-- /FOOTER -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- jQuery Plugins -->
+<script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" ></script>
+<script type="text/javascript" th:src="@{/js/jquery.zoom.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/slick.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+
+
+</body>
+</html>

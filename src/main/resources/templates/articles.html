@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html  lang="fr" xmlns:th="http://www.thymeleaf.org"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       layout:decorate="~{layout}">
+
+
+<head>
+
+
+    <style>
+        .mylabel{
+            position: relative;
+            display: block;
+            width: 40px;
+            height: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .mylabel input{
+            display: none;
+        }
+
+        .slidinggroove{
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: #B8B8B8;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .slidinggroove:after{
+            position: absolute;
+            content: "";
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            top: 0px;
+            left: 0px;
+            transition: all 0.3s ease;
+        }
+
+        input:checked + .slidinggroove{
+            background: #52b3d9;
+        }
+
+        input:checked + .slidinggroove:after{
+            transform: translateX(20px);
+        }
+
+        .labelterm{
+            position: relative;
+            margin-left: 50px;
+            font-size: 14px;
+            color: #222;
+        }
+
+    </style>
+
+
+    <meta charset="UTF-8"/>
+
+    <title>LogimaStore</title>
+</head>
+<body >
+
+<div  layout:fragment="content">
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="#">Accueil</a></li>
+                <li class="active">Articles</li>
+                 <div class="header-search">
+                    <form th:action="@{articles}" method="get">
+                        <input name="motCletLib" class="input" placeholder="trouvez un article" th:value="${motCletLib}">
+                        <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+
+            </ul>
+        </div>
+    </div>
+
+    <!-- /BREADCRUMB -->
+
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- ASIDE -->
+                <div id="aside" class="col-md-3">
+                    <!-- aside widget -->
+                    <div class="aside">
+                        <h3 class="aside-title">Tags:</h3>
+
+                        <ul class="filter-list" th:if="${motCletLib}!=${''}">
+                            <li  ><span class="text-uppercase">Mot clé:</span></li>
+                            <li >
+                                <a th:href="@{articles(prixSelect=${prixSelect},marque=${marque},page=${page},size=${size},motClet=${motClet},motCletLib=${''})}"  th:text="${motCletLib}" style="color:#FFF; background-color:#475984;"></a>
+                            </li>
+                        </ul>
+
+
+                        <ul class="filter-list" th:if="${prixSelect}!=${100000}">
+                            <li  ><span class="text-uppercase">Prix:</span></li>
+                            <li >
+                                <a th:href="@{articles(prixSelect=${100000},marque=${marque},page=${page},size=${size},motClet=${motClet},motCletLib=${motCletLib})}"  th:text="${prixSelect}" style="color:#FFF; background-color:#475984;"></a>
+                            </li>
+                        </ul>
+
+                        <ul class="filter-list" th:if="${marque}!=${''}">
+                            <li><span class="text-uppercase">Marque:</span></li>
+                            <li >
+                                <a th:href="@{articles(prixSelect=${prixSelect},marque=${''},page=${page},size=${size},motClet=${motClet},motCletLib=${motCletLib})}"  th:text="${marque}" style="color:#FFF; background-color:#475984;"></a>
+                            </li>
+                        </ul>
+
+                        <ul class="filter-list" th:if="${motClet}!=${''}">
+                            <li><span class="text-uppercase">Categorie:</span></li>
+                            <li >
+                                <a th:href="@{articles(prixSelect=${prixSelect},marque=${marque},page=${page},size=${size},motClet=${''},motCletLib=${motCletLib})}"  th:text="${motClet}" style="color:#FFF; background-color:#475984;"></a>
+                            </li>
+                        </ul>
+
+                        <form th:action="@{articles}" method="get">
+                            <button type="submit" class="primary-btn">effacer tous</button>
+                        </form>
+
+                    </div>
+                    <!-- /aside widget -->
+
+
+                    <!-- aside widget -->
+                    <div class="aside">
+                        <h3 class="aside-title">Filtrer par prix:</h3>
+
+                        <form th:action="@{articles}" method="get">
+
+                            <div class="mylabel">
+                                <input type="radio" id="tous" name="prixSelect"  value="100000" checked>
+                                <div class="slidinggroove"></div>
+                                <label class="mylabel" for="tous" name="skills"><p class="labelterm">Tous</p></label>
+                            </div>
+
+                            <div class="mylabel">
+                                <input type="radio" id="100" name="prixSelect"  value="100">
+                                <div class="slidinggroove"></div>
+                                <label class="mylabel" for="100" name="skills"><p class="labelterm"> <100Dhs </p></label>
+                            </div>
+
+                            <div class="mylabel">
+                                <input type="radio" id="500" name="prixSelect"  value="500">
+                                <div class="slidinggroove"></div>
+                                <label class="mylabel" for="500" name="skills"><p class="labelterm"> <500Dhs </p></label>
+                            </div>
+
+                            <div class="mylabel">
+                                <input type="radio" id="1000" name="prixSelect"  value="1000">
+                                <div class="slidinggroove"></div>
+                                <label class="mylabel" for="1000" name="skills"><p class="labelterm"> <1000Dhs </p></label>
+                            </div>
+
+                            <div class="mylabel">
+                                <input type="radio"  id="3000" name="prixSelect"  value="3000">
+                                <div class="slidinggroove"></div>
+                                <label class="mylabel" for="3000" name="skills"><p class="labelterm"> <3000Dhs </p></label>
+                            </div>
+
+                            <div class="mylabel">
+                                <input type="radio" id="5000" name="prixSelect"  value="5000">
+                                <div class="slidinggroove"></div>
+                                <label class="mylabel" for="5000" name="skills"><p class="labelterm"> <5000Dhs </p></label>
+                            </div>
+
+                            <div class="mylabel">
+                                <input type="radio" id="10000" name="prixSelect"  value="10000">
+                                <div class="slidinggroove"></div>
+                                <label class="mylabel" for="10000" name="skills"><p class="labelterm"> <10000Dhs </p></label>
+                            </div>
+
+
+                            <button type="submit" class="primary-btn">chercher</button>
+                        </form>
+
+                    </div>
+                    <!-- /aside widget -->
+
+                    <!-- aside widget -->
+                    <div class="aside">
+                        <h3 class="aside-title">Filtrer par Marque:</h3>
+                        <ul class="list-links">
+                            <li>
+                                <a th:href="@{articles(prixSelect=${prixSelect},marque=${'apple'},page=${page},size=${size},motClet=${motClet},motCletLib=${motCletLib})}">Apple</a>
+                            </li>
+
+                            <li>
+                                <a th:href="@{articles(prixSelect=${prixSelect},marque=${'asus'},page=${page},size=${size},motClet=${motClet},motCletLib=${motCletLib})}">Asus</a>
+                            </li>
+
+                            <li>
+                                <a th:href="@{articles(prixSelect=${prixSelect},marque=${'hp'},page=${page},size=${size},motClet=${motClet},motCletLib=${motCletLib})}">Hp</a>
+                            </li>
+
+                            <li>
+                                <a th:href="@{articles(prixSelect=${prixSelect},marque=${'huawei'},page=${page},size=${size},motClet=${motClet},motCletLib=${motCletLib})}">Huawei</a>
+                            </li>
+
+                            <li>
+                                <a th:href="@{articles(prixSelect=${prixSelect},marque=${'oppo'},page=${page},size=${size},motClet=${motClet},motCletLib=${motCletLib})}">Oppo</a>
+                            </li>
+
+                            <li>
+                                <a th:href="@{articles(prixSelect=${prixSelect},marque=${'lenovo'},page=${page},size=${size},motClet=${motClet},motCletLib=${motCletLib})}">Lenovo</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /aside widget -->
+
+                    <!-- aside widget -->
+                    <div class="aside">
+                        <h3 class="aside-title">Filtrer par Catégorie:</h3>
+                        <ul class="list-links">
+                            <li>
+                                <a th:href="@{articles(prixSelect=${prixSelect},marque=${marque},page=${page},size=${size},motClet=${'pc'},motCletLib=${motCletLib})}">Ordinateurs</a>
+                            </li>
+
+                            <li>
+                                <a th:href="@{articles(prixSelect=${prixSelect},marque=${marque},page=${page},size=${size},motClet=${'téléphone'},motCletLib=${motCletLib})}">Téléphones</a>
+                            </li>
+
+                            <li>
+                                <a th:href="@{articles(prixSelect=${prixSelect},marque=${marque},page=${page},size=${size},motClet=${'tablette'},motCletLib=${motCletLib})}">Tablettes</a>
+                            </li>
+
+                            <li>
+                                <a th:href="@{articles(prixSelect=${prixSelect},marque=${marque},page=${page},size=${size},motClet=${'imprimants'},motCletLib=${motCletLib})}">Autrs</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /aside widget -->
+                    <!-- /aside widget -->
+                </div>
+                <!-- /ASIDE -->
+
+                <!-- MAIN -->
+                <div id="main" class="col-md-9">
+                    <!-- store top filter -->
+                    <div class="store-filter clearfix">
+                        <div class="pull-left">
+
+                            <form th:action="@{articles}" method="get">
+                            <div class="sort-filter">
+                                <span class="text-uppercase">Order par:</span>
+                                <select class="input" name="sort">
+                                    <option value="prix">Prix</option>
+                                    <option value="date">Date</option>
+                                </select>
+                                <button type="submit" class="main-btn icon-btn"><i class="fa fa-arrow-down"></i></button>
+                            </div>
+
+                            </form>
+                        </div>
+
+                        <div class="pull-right">
+                            <!-- Choisir la taille -->
+                            <div class="page-filter">
+                                <form th:action="@{articles}" method="get">
+                                    <span class="text-uppercase">Taille:</span>
+                                    <select name="size" class="input" th:value="${size}">
+                                        <option style="display:none;" th:text="${size}" selected></option>
+                                        <option value="10">10</option>
+                                        <option value="20"> 20</option>
+                                        <option value="30">30</option>
+                                    </select>
+                                    <button type="submit" class="main-btn icon-btn"><i class="fa fa-arrow-right"></i></button>
+                                </form>
+                            </div>
+                            <ul class="store-pages">
+                                <li><span class="text-uppercase">Page:</span></li>
+                                <li th:if="${pageCourante}!=${0}">
+                                    <a th:href="@{articles(page=${pageCourante -1},size=${size},motClet=${motClet})}">
+                                        <i class="fa fa-caret-left"></i>
+                                    </a>
+                                </li>
+                                <li  th:class="${status.index}==${pageCourante}?'active':''" th:each="pik,status:${pages}">
+                                    <a th:if="${status.index}!=${pageCourante}" th:href="@{articles(page=${status.index},size=${size},motClet=${motClet})}" th:text="${status.index}"></a>
+                                    <span th:if="${status.index}==${pageCourante}" th:text="${status.index}"></span>
+                                </li>
+                                <li th:if="${pageCourante}!=${max -1}">
+                                    <a th:href="@{articles(page=${pageCourante + 1},size=${size},motClet=${motClet})}">
+                                        <i class="fa fa-caret-right"></i>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /store top filter -->
+
+                    <!-- STORE -->
+                    <div id="store">
+                        <!-- row -->
+                        <div th:each="a,rowStatus:${listArticle}" class="row" th:if="${rowStatus.index % 3} == 0">
+                            <!-- Product Single -->
+                            <div th:each="a,rowStatusChild:${listArticle}" class="col-md-4"
+                                 th:if="${rowStatusChild.index lt rowStatus.index + 3 and rowStatusChild.index ge rowStatus.index }">
+                                <div class="product product-single" >
+                                    <div class="product-thumb">
+                                        <div class="product-label">
+                                            <span>Noeuf</span>
+                                            <span th:if="${a.prix} < ${1900} and ${a.prix} > ${100}" class="sale">-20%</span>
+                                        </div>
+                                        <a th:href="@{panier(idArticle=${a.idArticle})}" class="main-btn quick-view"><i class="fa fa-search-plus"></i>Voir</a>
+                                        <img th:src="@{${a.image1_front}}" alt="">
+                                    </div>
+                                    <div class="product-body">
+                                        <h3 class="product-price" th:inline="text">[[${a.prix}]]Dhs
+                                            <del th:if="${a.prix} < ${1900} and ${a.prix} > ${100}" class="product-old-price"th:inline="text">[[${a.prix*0.8}]]</del>
+                                        </h3>
+                                        <div class="product-rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-o empty"></i>
+                                        </div>
+                                        <h2 class="product-name"><a href="#" th:text="${a.libArticle}"></a></h2>
+                                        <div class="product-btns">
+                                            <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                                            <a th:href="@{panier(idArticle=${a.idArticle})}"  class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Ajouter au panier </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Product Single -->
+                            <div class="clearfix visible-sm visible-xs"></div>
+                        </div>
+                        <!-- /row -->
+                    </div>
+                    <!-- /STORE -->
+
+                    <!-- Pagination -->
+                    <div class="pull-right">
+                            <!-- Choisir la taille -->
+                            <div class="page-filter">
+                                <form th:action="@{articles}" method="get">
+                                    <span class="text-uppercase">Taille:</span>
+                                    <select name="size" class="input" th:value="${size}">
+                                        <option style="display:none;" th:text="${size}" selected></option>
+                                        <option value="10">10</option>
+                                        <option value="20"> 20</option>
+                                        <option value="30">30</option>
+                                    </select>
+                                <button type="submit" class="main-btn icon-btn"><i class="fa fa-arrow-right"></i></button>
+                                </form>
+                            </div>
+                            <!-- /choisir la taille -->
+                            <ul class="store-pages">
+                                <li><span class="text-uppercase">Page:</span></li>
+                                <li th:if="${pageCourante}!=${0}">
+                                    <a th:href="@{articles(page=${pageCourante -1},size=${size},motClet=${motClet})}">
+                                        <i class="fa fa-caret-left"></i>
+                                    </a>
+                                </li>
+                                <li  th:class="${status.index}==${pageCourante}?'active':''" th:each="pik,status:${pages}">
+                                    <a th:if="${status.index}!=${pageCourante}" th:href="@{articles(page=${status.index},size=${size},motClet=${motClet})}" th:text="${status.index}"></a>
+                                    <span th:if="${status.index}==${pageCourante}" th:text="${status.index}"></span>
+                                </li>
+                                <li th:if="${pageCourante}!=${max -1}">
+                                    <a th:href="@{articles(page=${pageCourante + 1},size=${size},motClet=${motClet})}">
+                                        <i class="fa fa-caret-right"></i>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /Pagination -->
+                </div>
+                <!-- /MAIN -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html  lang="fr" xmlns:th="http://www.thymeleaf.org"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       layout:decorate="~{layout}">
+
+
+<head>
+
+    <meta charset="UTF-8"/>
+
+    <title>LogimaStore</title>
+</head>
+<body >
+
+<div  layout:fragment="content">
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="#">Accueil</a></li>
+                <li><a href="#">Articles</a></li>
+                <li><a href="#">Mon panier</a></li>
+                <li class="active" th:text="${article.libArticle}"></li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!--  Product Details -->
+                <div class="product product-details clearfix">
+                    <div class="col-md-6">
+                        <div id="product-main-view">
+                            <div class="product-view">
+                                <img th:src="@{${article.getImage1()}}" alt="">
+                            </div>
+                            <div class="product-view">
+                                <img th:src="@{${article.getImage2()}}" alt="">
+                            </div>
+                            <div class="product-view">
+                                <img th:src="@{${article.getImage3()}}" alt="">
+                            </div>
+                            <div class="product-view">
+                                <img th:src="@{${article.getImage4()}}" alt="">
+                            </div>
+                        </div>
+                        <div id="product-view">
+                            <div class="product-view">
+                                <img th:src="@{${article.getImage1()}}" alt="">
+                            </div>
+                            <div class="product-view">
+                                <img th:src="@{${article.getImage2()}}" alt="">
+                            </div>
+                            <div class="product-view">
+                                <img th:src="@{${article.getImage3()}}" alt="">
+                            </div>
+                            <div class="product-view">
+                                <img th:src="@{${article.getImage4()}}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="product-body">
+                            <div class="product-label">
+                                <span th:text="${article.etat}"></span>
+                                <span th:if="${article.prix} < ${1900} and ${article.prix} > ${100}" class="sale">-20%</span>
+                            </div>
+                            <h2 class="product-name" th:text="${article.libArticle}"></h2>
+                            <h3 class="product-price" th:inline="text">[[${article.prix}]]Dhs <del class="product-old-price"></del></h3>
+                            <div>
+                                <div class="product-rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o empty"></i>
+                                </div>
+                                <a href="#">Les avis(s) / Ajouter votre avis</a>
+                            </div>
+                            <p><strong>Quantité en stock:</strong> <span th:text="${article.quantiteStock}"></span> unité</p>
+                            <p><strong>Marque:</strong> <span th:text="${article.marque}"></span></p>
+                            <p th:text="${article.description}"></p>
+                            <div class="product-btns">
+                                <form th:action="@{listePanier}" method="get">
+                                <div class="qty-input">
+                                    <span class="text-uppercase">Quantité: </span>
+                                    <input name="quantite" class="input" type="number" th:value="${quantite}">
+                                </div>
+                                    <button type="submit" class="main-btn icon-btn"><i class="fa fa-check"></i></button>
+                                    <div class="pull-right">
+                                        <a th:href="@{listePanierArticle(quantite=${quantite},idArticle=${article.idArticle})}" type="submit" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Ajouter au panier</a>
+                                        <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="product-tab">
+                            <ul class="tab-nav">
+                                <li class="active"><a data-toggle="tab" href="#tab1">Description</a></li>
+                                <li><a data-toggle="tab" href="#tab2">Avis et commentaire</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="tab1" class="tab-pane fade in active">
+                                    <p th:text="${article.description}"></p>
+                                </div>
+                                <div id="tab2" class="tab-pane fade in">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="product-reviews">
+
+
+                                                <ul class="reviews-pages">
+                                                    <li class="active">1</li>
+                                                    <li><a href="#"><i class="fa fa-caret-right"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h4 class="text-uppercase">Votre commentaire</h4>
+                                            <form class="review-form">
+                                                <div class="form-group">
+                                                    <input class="input" type="text" placeholder="Nom" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <input class="input" type="email" placeholder="Email" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <textarea class="input" placeholder="Avis"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-rating">
+                                                        <strong class="text-uppercase">Qualité: </strong>
+                                                        <div class="stars">
+                                                            <input type="radio" id="star5" name="rating" value="5" /><label for="star5"></label>
+                                                            <input type="radio" id="star4" name="rating" value="4" /><label for="star4"></label>
+                                                            <input type="radio" id="star3" name="rating" value="3" /><label for="star3"></label>
+                                                            <input type="radio" id="star2" name="rating" value="2" /><label for="star2"></label>
+                                                            <input type="radio" id="star1" name="rating" value="1" /><label for="star1"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button class="primary-btn">Inserer</button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /Product Details -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+</div>
+
+
+</body>
+</html>

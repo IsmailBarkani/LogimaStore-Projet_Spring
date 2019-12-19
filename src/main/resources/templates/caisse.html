@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html  lang="fr" xmlns:th="http://www.thymeleaf.org"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       layout:decorate="~{layout}">
+
+
+<head>
+
+    <meta charset="UTF-8"/>
+
+    <title>LogimaStore</title>
+</head>
+<body >
+
+<div  layout:fragment="content">
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="#">Accueil</a></li>
+                <li class="active">caisse</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                    <div class="col-md-12">
+                        <div class="order-summary clearfix">
+                            <div class="section-title">
+                                <h3 class="title">Mon panier</h3>
+                            </div>
+                            <table class="shopping-cart-table table">
+                                <thead>
+                                <tr>
+                                    <th>Article</th>
+                                    <th></th>
+                                    <th class="text-center">Prix</th>
+                                    <th class="text-center">Quantity</th>
+                                    <th class="text-center">Total</th>
+                                    <th class="text-right"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="lp:${listArticlePanier}">
+                                    <td class="thumb"><img th:src="@{${lp.image1_front}}" alt=""></td>
+                                    <td class="details">
+                                        <a href="#" th:text="${lp.libArticle}"></a>
+                                        <ul>
+                                            <li><span>Marque: <span th:text="${lp.marque}"></span></span></li>
+                                            <li><span>Date d'ajoute: <span th:text="${lp.dateAjoute}"></span></span></li>
+                                        </ul>
+                                    </td>
+                                    <td class="price text-center"><strong th:inline="text">[[${lp.prix}]]Dhs </strong><br></td>
+                                    <div th:each="lpq:${lignePaniers}">
+                                    <td th:if="${lpq.idPanierArticle.idArticle}==${lp.idArticle}" class="qty text-center"><input name ="quantite" class="input" type="number" th:value="${lpq.quantite}" disabled="disabled"></td>
+                                    <td th:if="${lpq.idPanierArticle.idArticle}==${lp.idArticle}" class="total text-center"><strong class="primary-color" th:text="${lpq.quantite*lp.prix}"></strong></td>
+                                    </div>
+                                    <td class="text-right"><a th:href="@{supprimer(idArticle=${lp.idArticle})}" class="main-btn icon-btn"><i class="fa fa-close"></i></a></td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th class="empty" colspan="3"></th>
+                                    <th>Totale</th>
+                                    <th colspan="2" class="sub-total" th:inline="text"> [[${totale}]]Dhs</th>
+                                </tr>
+                                <tr>
+                                    <th class="empty" colspan="3"></th>
+                                    <th>type de Compte</th>
+                                    <td colspan="2">NORMAL (0%)</td>
+                                </tr>
+                                <tr>
+                                    <th class="empty" colspan="3"></th>
+                                    <th>TOTALE NET</th>
+                                    <th colspan="2" class="total" th:inline="text"> [[${totale}]]Dhs</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                                <div class="pull-right">
+                                    <a th:href="@{paiement}" class="primary-btn">Finaliser votre Commande</a>
+                                </div>
+
+                    </div>
+
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+</div>
+
+
+</body>
+</html>

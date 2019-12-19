@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html  lang="fr" xmlns:th="http://www.thymeleaf.org"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       layout:decorate="~{layout}">
+
+
+<head>
+    <meta charset="UTF-8"/>
+
+    <title>LogimaStore</title>
+</head>
+<body >
+
+<div  layout:fragment="content">
+
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="#">Accueil</a></li>
+                <li class="active">Se connecter</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container ">
+            <!-- row -->
+            <div class="row">
+                <div class="container" th:if="${error}">
+                    <div class="alert alert-danger" role="alert">
+                        Désolé! le mot de pass ou login est incorrect
+                    </div>
+                </div>
+                <form th:action="@{/login}" method="post">
+                    <div class="col-md-6">
+                        <div class="billing-details">
+                            <p>vous n'avez pas un compte ? <a th:href="@{/inscription}">S'inscrire</a></p>
+                            <div class="section-title">
+                                <h3 class="title">Se connecter</h3>
+                            </div>
+                            <div class="form-group">
+                                <input class="input" type="text" name="username" placeholder="Email">
+                            </div>
+
+                            <div class="form-group">
+                                <input class="input" type="password" name="password" placeholder="Mot de passe">
+                            </div>
+
+                            <div class="form-group">
+                                <button class="primary-btn">Connecter</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+</div>
+
+
+</body>
+</html>

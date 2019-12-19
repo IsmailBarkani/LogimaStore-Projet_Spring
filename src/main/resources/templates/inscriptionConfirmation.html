@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html  lang="fr" xmlns:th="http://www.thymeleaf.org"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       layout:decorate="~{layout}">
+
+
+<head>
+
+    <meta charset="UTF-8"/>
+
+    <title>LogimaStore</title>
+</head>
+<body >
+
+<div  layout:fragment="content">
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="#">Accueil</a></li>
+                <li class="active">Confirmation</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <form th:action="@{inscription}" id="checkout-form" class="clearfix">
+                    <div class="col-md-6">
+                        <div class="billing-details">
+                            <div class="section-title">
+                                <h3 class="title">Confirmation</h3>
+                            </div>
+                            <div class="alert alert-success" role="alert">
+                                <span>Félicitation! vous étes maintenat un membre, <a th:href="@{/login}">Se connecter</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+</div>
+
+
+</body>
+</html>

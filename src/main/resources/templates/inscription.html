@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html  lang="fr" xmlns:th="http://www.thymeleaf.org"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       layout:decorate="~{layout}">
+
+
+<head>
+
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css"  th:href="@{css/validation.css}" href="../static/css/validation.css" />
+
+    <title>LogimaStore</title>
+</head>
+<body >
+
+<div  layout:fragment="content">
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="#">Accueil</a></li>
+                <li class="active">Inscription</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <form class="validate-form" th:action="@{/inscriptionConfirmation}" method="get"   >
+                    <div class="col-md-6">
+                        <div class="billing-details">
+                            <p>Vous avez deja un compte ? <a th:href="@{/login}">Se connecter</a></p>
+                            <div class="section-title">
+                                <h3 class="title">Données personnelle</h3>
+                            </div>
+                            <div class="form-group validate-input" data-validate = "indispensable">
+                                <input class="input" type="text" name="nom" placeholder="Nom" >
+                                <span style="color: firebrick;" th:errors="${user.nom}"></span>
+                            </div>
+                            <div class="form-group">
+                                <input class="input" type="text" name="Prenom" placeholder="prénom">
+                                <span style="color: firebrick;" th:errors="${user.prenom}"></span>
+                            </div>
+                            <div class="form-group">
+                                <input class="input" type="text" name="telephone" placeholder="Téléphone">
+                                <span style="color: firebrick;" th:errors="${user.telephone}"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input class="input" type="text" name="nomVille" placeholder="Ville">
+                                <span style="color: firebrick;" th:errors="${ville.nomVille}"></span>
+                            </div>
+                            <div class="form-group">
+                                <input class="input" type="text" name="provaince" placeholder="Provaince">
+                                <span style="color: firebrick;" th:errors="${ville.provaince}"></span>
+                            </div>
+                            <div class="form-group">
+                                <input class="input" type="text" name="region" placeholder="Région">
+                                <span style="color: firebrick;" th:errors="${ville.region}"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input class="input" type="text" name="adresse" placeholder="Adresse" th:value="${user.adresse}">
+                                <span style="color: firebrick;" th:errors="${user.adresse}"></span>
+                            </div>
+                            <div class="section-title">
+                                <h3 class="title">Données sur le compte</h3>
+                            </div>
+                            <div class="form-group">
+                                <input class="input" type="email" name="login" placeholder="Email">
+                                <span style="color: firebrick;" th:errors="${compte.login}"></span>
+                                <span style="color: firebrick;" th:if="${exist}"> Cet email est deja utilisé </span>
+                            </div>
+                            <div class="form-group">
+                                <input class="input" type="password" name="password" placeholder="Mot de passe" >
+                                <span style="color: firebrick;" th:errors="${compte.password}"></span>
+                            </div>
+                            <div class="form-group">
+                                <input class="input" type="password" name="confirmePassword" placeholder="Confirme mot de passe">
+                                <span style="color: firebrick;" th:if="${notConfirme}"> Le mot de passe n'est pas comfirme</span>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-checkbox">
+                                    <input type="checkbox" id="register">
+                                    <label class="font-weak" for="register">J'accepte les termes et la politique de confidentialité</label>
+                                    <div class="caption">
+                                        <button   class="primary-btn">Valider</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="shiping-methods">
+                            <div class="section-title">
+                                <h4 class="title">Groupe</h4>
+                            </div>
+                            <div class="input-checkbox">
+                                <input type="radio" name="choix" id="achteur" value="achteur" checked>
+                                <label for="achteur">Achteur - 0.00Dhs/mois</label>
+                                <div class="caption">
+                                    <p>Un achat en ligne simple et rapide
+                                    <p>
+                                </div>
+                            </div>
+                            <div class="input-checkbox">
+                                <input type="radio" name="choix" id="vendeur" value="vendeur">
+                                <label for="vendeur">Vendeur - 99Dhs/mois</label>
+                                <div class="caption">
+                                    <p>Vous aurez une boutique en ligne, LogimaStore va vous accompagner durant tout le process commercial, nous vous proposons plusieurs services et nous serons votre partenaire.
+                                    <p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="payments-methods">
+                            <div class="section-title">
+                                <h4 class="title">Politique de Confidentialité</h4>
+                            </div>
+                            <p>
+                            <strong >1. Récupération des données personnelles utilisateur: </strong>Nous pouvons collecter des données personnelles de nature diverses. Nous avons besoin de ces données personnelles, notamment afin de permettre la commande d’un produit, le paiement et la livraison.
+                                <br>
+                             <strong >2. Sécurité: </strong>Vous êtes responsable de l'accès non autorisé à votre mot de passe et à votre ordinateur.
+                                <br>
+                                <strong >3. Modification: </strong>Cette politique de confidentialité peut changer à tout moment par exemples en incluant ou excluant des clauses.
+
+                            <p>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+</div>
+
+<script>
+
+</script>
+</body>
+</html>

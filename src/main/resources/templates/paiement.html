@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html  lang="fr" xmlns:th="http://www.thymeleaf.org"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       layout:decorate="~{layout}">
+
+
+<head>
+
+    <meta charset="UTF-8"/>
+
+    <title>LogimaStore</title>
+</head>
+<body >
+
+<div  layout:fragment="content">
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="#">Accueil</a></li>
+                <li class="active">caisse</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <form id="checkout-form" class="clearfix">
+                    <div class="col-md-6">
+                        <div class="billing-details">
+                            <div class="section-title">
+                                <h3 class="title">Adresse</h3>
+                            </div>
+                            <div class="form-group">
+                                        <div class="form-group">
+                                            <input class="input" type="text" name="region" placeholder="Région">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="input" type="text" name="provaince" placeholder="Provaince">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="input" type="text" name="Ville" placeholder="Ville">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="input" type="text" name="quartie" placeholder="Quartie">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="input" type="text" name="CodePostale" placeholder="Code Postale">
+                                        </div>
+                                    </div>
+                            <div class="section-title">
+                                <h3 class="title">Mode de paiement</h3>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-checkbox">
+                                    <input type="radio" name="methodePaiment" id="livraisant" checked>
+                                    <label class="font-weak" for="livraisant"> <h4>Paiement Cash à livraison</h4></label>
+                                    <div class="caption">
+                                        <p>
+                                            <Strong>Payer en éspece dés que vous  recevez votre  commande</Strong>
+                                            <br>
+                                            - Soyez certain d'avoir le montant exact  du paiement. <br>
+                                            - Nous acceptons uniquement  le paiement  en Dirhams marocain.
+                                            <br>
+                                        <p>
+                                        <div class="form-group">
+                                            <input class="input" type="text" name="ville" placeholder="Ville">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="input" type="text" name="CodePostale" placeholder="Code postale">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="input" type="text" name="CodePostale" placeholder="Adresse">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="input" type="text" name="provaince" placeholder="Provaince">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="input" type="text" name="region" placeholder="Région">
+                                        </div>
+                                    </div>
+
+
+
+                                    <input type="radio" name="methodePaiment" id="carte">
+                                    <label class="font-weak" for="carte"><h4> Carte</h4></label>
+                                    <div class="caption">
+                                        <p> Payez avec votre carte MasterCard et Visa  de maniére sécurisée. Toutes les banques sont accéptées.
+                                        <p>
+                                            <label >Numéro de carte crédit/débit</label>
+                                        <div class="form-group">
+                                            <input class="input" type="text" name="NumCarte" placeholder="Numéro de carte crédit/débit">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label >Date d'éxpiration</label>
+                                            <input class="input" type="date" name="Date" placeholder="Date d'éxpiration">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input class="input" type="text" name="CVV" placeholder="CVV">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pull-right">
+                            <a th:href="@{/confirmation}" class="primary-btn">Finaliser votre Commande</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="shiping-methods">
+                            <div class="section-title">
+                                <h4 class="title">Politique de retour</h4>
+                            </div>
+                                <span style="color: #2e6da4;"> <strong>Comment retourner un produit ?</strong>  </span>
+                                <div class="caption">
+                                    <p>Vous pouvez demander le retour de vos article en appelant notre service clientèle 05 22 45 67 50 ou sur notre site dans la rubrique.
+                                    <p>
+                            </div>
+                            <span style="color: #2e6da4;"> <strong>Quel est le délai de retour chez LogimaStore ?</strong> </span>
+                            <div class="caption">
+                                    <p>Tout produit vendu chez Logima peut être retourné dans un délai de 7 jours à compter de la date de livraison. Passé ce délai, nous n’acceptons malheureusement plus les retours.
+                                    <p>
+                                </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+</div>
+
+
+</body>
+</html>
